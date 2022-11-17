@@ -1,10 +1,12 @@
 import React, {useEffect, useState} from 'react'
 import './Table.css'
 import TableRow from './TableRow'
+import Filter from './Filter'
 
-function Table({countries}) {
-
+function Table() {
   const[countryStatistics, setCountryStatistics] = useState([])
+  const [category, setCategory] = useState("All")
+  const [search, setSearch] = useState("")
   
   //Fetch statistics data for each country from API
   useEffect(() => {
@@ -18,7 +20,24 @@ function Table({countries}) {
       .then((data) => setCountryStatistics(data.response))
     }, [])
 
-    // console.log(countryStatistics)
+  //Update category to selected country
+  function handleCategoryChange(event) {
+    setCategory(event.target.value);
+  }
+
+  //Update search
+  function handleSearchChange(e) {
+    setSearch(e.target.value)
+  }  
+
+  //set books based on search and country selected
+  const countriesToDisplay = countryStatistics
+    // country selected
+    .filter(
+      (stat) => category === "All" || stat.country === category
+    )
+    // search term
+    .filter((stat) => stat.country.toLowerCase().includes(search.toLowerCase()));
 
     //Render country statistics
     function renderCountryStats(stats) {
@@ -31,6 +50,7 @@ function Table({countries}) {
   return (
     <div>
       <h4>Statistics table.</h4>
+      <Filter search={search} onCategoryChange={handleCategoryChange} onSearchChange={handleSearchChange} />
       <table>
         <thead>
           <tr>
@@ -45,7 +65,7 @@ function Table({countries}) {
           </tr>
         </thead>
         <tbody>
-          {renderCountryStats(countryStatistics)}
+          {renderCountryStats(countriesToDisplay)}
         </tbody>
       </table>
     </div>
