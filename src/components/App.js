@@ -17,7 +17,7 @@ function App() {
       .then((data) => setCountries(data.response))
   }, [])
 
-  console.log(countries)
+  // console.log(countries)
 
   
 

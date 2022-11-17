@@ -1,32 +1,32 @@
 import React, {useEffect, useState} from 'react'
 import './Table.css'
+import TableRow from './TableRow'
 
 function Table({countries}) {
 
   const[countryStatistics, setCountryStatistics] = useState([])
   
-
   //Fetch statistics data for each country from API
-  function fetchCountryStatistics(countries) {
-    countries.map(country => {
-      fetchStats(country)
+  useEffect(() => {
+    fetch('https://covid-193.p.rapidapi.com/statistics', {
+    method: "GET",
+    headers: {
+      "X-RapidAPI-Key": "6b09700e80msh3536898bd3bd10ap1eec9bjsn76cac6f152da",
+    },
     })
-  }
-
-  function fetchStats(country) {
-    useEffect(() => {
-      fetch(`https://covid-193.p.rapidapi.com/statistics?country=${country}`, {
-        method: "GET",
-        headers: {
-          "X-RapidAPI-Key": "6b09700e80msh3536898bd3bd10ap1eec9bjsn76cac6f152da",
-        },
-      })
-        .then((res) => res.json())
-        .then((data) => console.log(data))
+      .then((res) => res.json())
+      .then((data) => setCountryStatistics(data.response))
     }, [])
-  }
 
-  fetchCountryStatistics(countries)
+    // console.log(countryStatistics)
+
+    //Render country statistics
+    function renderCountryStats(stats) {
+      let statistics = stats.map((countryStats) => {
+        return <TableRow key={ countryStats.country } stats={countryStats} />
+      })
+      return statistics
+    }
 
   return (
     <div>
@@ -44,6 +44,9 @@ function Table({countries}) {
             </th>
           </tr>
         </thead>
+        <tbody>
+          {renderCountryStats(countryStatistics)}
+        </tbody>
       </table>
     </div>
   )
