@@ -1,5 +1,5 @@
 import React, {useEffect, useState, useMemo} from 'react'
-import { useTable } from 'react-table'
+import { useTable, usePagination } from 'react-table'
 import { COLUMNS } from './Columns'
 import './basictable.css'
 import Filter from './Filter'
@@ -51,26 +51,27 @@ function BasicTable() {
       }
     })
 
-    console.log(stats)
+    console.log(countryStatistics)
 
     //Create table using useTable hook
     const columns = useMemo(() => COLUMNS, [])
-    const data = useMemo(() => stats, [countriesToDisplay])
+    const data = useMemo(() => stats, [countriesToDisplay]);
 
     // console.log(data)
-
-    const tableInstance = useTable({
-      columns,
-      data
-    });
 
     const {
       getTableProps, 
       getTableBodyProps, 
       headerGroups, 
       rows, 
-      prepareRow 
-    } = tableInstance
+      prepareRow,
+    } = useTable(
+      {
+        columns,
+        data
+      },
+      // usePagination
+    )
 
   return (
     <div>
