@@ -19,7 +19,7 @@ function Filter({onCategoryChange, onSearchChange, search}) {
   // console.log(countries)
 
   const options = countries.map((country) => {
-    return <option value={country}>{country}</option>
+    return <option key={country} value={country}>{country}</option>
   })
 
   return (
