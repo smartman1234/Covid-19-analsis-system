@@ -4,7 +4,7 @@ import { COLUMNS } from './Columns'
 import './basictable.css'
 import Filter from './Filter'
  
-function BasicTable() {
+function Table({countries}) {
   const[countryStatistics, setCountryStatistics] = useState([])
   const [category, setCategory] = useState("All")
   const [search, setSearch] = useState("")
@@ -51,7 +51,7 @@ function BasicTable() {
       }
     })
 
-    console.log(countryStatistics)
+    // console.log(countryStatistics)
 
     //Create table using useTable hook
     const columns = useMemo(() => COLUMNS, [])
@@ -76,7 +76,7 @@ function BasicTable() {
   return (
     <div>
       <h4>Statistics table.</h4>
-      <Filter search={search} onCategoryChange={handleCategoryChange} onSearchChange={handleSearchChange} />
+      <Filter countries={countries} search={search} onCategoryChange={handleCategoryChange} onSearchChange={handleSearchChange} />
       <table {...getTableProps()} >
         <thead>
           {headerGroups.map((headerGroup) => {
@@ -112,4 +112,4 @@ function BasicTable() {
   )
 }
 
-export default BasicTable
+export default Table
