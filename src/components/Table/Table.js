@@ -4,41 +4,34 @@ import { COLUMNS } from './Columns'
 import './basictable.css'
 import Filter from './Filter'
  
-function Table({countries}) {
+function Table({countries, onCategoryChange, apiKey}) {
   const[countryStatistics, setCountryStatistics] = useState([])
   const [category, setCategory] = useState("All")
-  const [search, setSearch] = useState("")
 
     //Fetch statistics data for each country from API
     useEffect(() => {
       fetch('https://covid-193.p.rapidapi.com/statistics', {
       method: "GET",
       headers: {
-        "X-RapidAPI-Key": "6b09700e80msh3536898bd3bd10ap1eec9bjsn76cac6f152da",
+        "X-RapidAPI-Key": apiKey,
       },
       })
         .then((res) => res.json())
         .then((data) => setCountryStatistics(data.response))
     }, [])
 
-      //Update category to selected country
-    function handleCategoryChange(event) {
-      setCategory(event.target.value);
+    //Update category to selected country
+    function handleCategoryChange(category) {
+      setCategory(category);
+      onCategoryChange(category)
     }
 
-    //Update search
-    function handleSearchChange(e) {
-      setSearch(e.target.value)
-    }  
-
-    //set books based on search and country selected
+    //set country(s) display based country selected
     const countriesToDisplay = countryStatistics
       // country selected
       .filter(
         (stat) => category === "All" || stat.country === category
       )
-      // search term
-      .filter((stat) => stat.country.toLowerCase().includes(search.toLowerCase()));
 
 
     //Set statistics to display
@@ -51,13 +44,9 @@ function Table({countries}) {
       }
     })
 
-    // console.log(countryStatistics)
-
     //Create table using useTable hook
     const columns = useMemo(() => COLUMNS, [])
     const data = useMemo(() => stats, [countriesToDisplay]);
-
-    // console.log(data)
 
     const {
       getTableProps, 
@@ -75,8 +64,8 @@ function Table({countries}) {
 
   return (
     <div>
-      <h4>Statistics table.</h4>
-      <Filter countries={countries} search={search} onCategoryChange={handleCategoryChange} onSearchChange={handleSearchChange} />
+      <h3>Statistics table.</h3>
+      <Filter countries={countries} onCategoryChange={handleCategoryChange} />
       <table {...getTableProps()} >
         <thead>
           {headerGroups.map((headerGroup) => {

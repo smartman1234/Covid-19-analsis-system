@@ -1,20 +1,20 @@
-import React, {useEffect, useState} from 'react'
+import React from 'react'
+import Select from 'react-select';
 import './Filter.css'
 
-function Filter({countries, onCategoryChange, onSearchChange, search}) {
-
+function Filter({countries, onCategoryChange }) {
 
   const options = countries.map((country) => {
-    return <option key={country} value={country}>{country}</option>
+    return { label: country, value: country }
   })
 
   return (
     <div className='filter'>
-      <input className='search' type='text' name='search' placeholder='Search...' value={search} onChange={onSearchChange} />
-      <select name='sort' onChange={onCategoryChange}>
-        <option value='All'>All</option>
-        {options}
-      </select>
+      <p>Select a country to render on graph: </p>
+      <Select
+        options={options} 
+        onChange={opt => onCategoryChange(opt.label)}
+      />
   </div>
   )
 }

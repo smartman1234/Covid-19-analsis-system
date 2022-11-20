@@ -2,29 +2,29 @@ import React, { PureComponent, useState, useEffect } from 'react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import './Graph.css'
 
-function Graph({countries}) {
+function Graph({countries, categoryOnGraph, apiKey}) {
   const[data, setData] = useState([]);
-  const [category, setCategory] = useState("Afghanistan");
+  
 
   //fetch history data from API 
   useEffect(() => {
-    fetch(`https://covid-193.p.rapidapi.com/history?country=${category}`, {
+    fetch(`https://covid-193.p.rapidapi.com/history?country=${categoryOnGraph}`, {
     method: "GET",
     headers: {
-      "X-RapidAPI-Key": "6b09700e80msh3536898bd3bd10ap1eec9bjsn76cac6f152da",
+      "X-RapidAPI-Key": apiKey
     },
     })
       .then((res) => res.json())
       .then((data) => setData(data.response))
-  }, [category])
+  }, [categoryOnGraph])
 
   //Sort data to display on graph
   const sortedData = data.map((dayStats) => {
     return {
       name: dayStats.day,
-      Tests: dayStats.tests.total,
-      Cases: dayStats.cases.total,
-      Deaths: dayStats.deaths.total
+      Tests: dayStats.tests.total / 1000000,
+      Cases: dayStats.cases.total / 1000000,
+      Deaths: dayStats.deaths.total / 1000000
     }
   });
 
@@ -33,23 +33,15 @@ function Graph({countries}) {
     return <option key={country} value={country}>{country}</option>
   });
 
-  //Handle category change
-  function handleCategoryChange(event) {
-    setCategory(event.target.value);
-  }
-
 
   return (
     <div>
       <h3>Daily graph showing Covid-19 history.</h3>
-      <p>Select country to show history:</p>
-      <select name='sort' onChange={handleCategoryChange}>
-        {options}
-      </select>
+      <p>Displaying Covid-19 history in {categoryOnGraph}</p>
       <LineChart
       width={1200}
       height={600}
-      data={sortedData}
+      data={sortedData.reverse()}
       margin={{
         top: 5,
         right: 30,
@@ -59,7 +51,7 @@ function Graph({countries}) {
     >
       <CartesianGrid strokeDasharray="3 3" />
       <XAxis dataKey="name" label={{ value: "Dates", offset: 0, position: "insideBottom" }} />
-      <YAxis label={{ value: 'Cases,deaths and tests', angle: -90, position: 'insideLeft' }} />
+      <YAxis label={{ value: 'Cases,deaths and tests in millions', angle: -90, position: 'insideLeft' }} />
       <Tooltip />
       <Legend />
       <Line
