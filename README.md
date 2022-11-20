@@ -44,7 +44,7 @@ This is a website displaying Covid-19 statistics in various countries around the
 
 
 ### Live Link
-* The live link for the project is 
+* The live link for the project is https://peppy-cat-1fa6a5.netlify.app/
 
 ## Technology and Tools Used
 
