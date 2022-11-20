@@ -2,7 +2,7 @@ import React from 'react'
 import Select from 'react-select';
 import './Filter.css'
 
-function Filter({countries, onCategoryChange }) {
+function Filter({ countries, onCategoryChange }) {
 
   const options = countries.map((country) => {
     return { label: country, value: country }

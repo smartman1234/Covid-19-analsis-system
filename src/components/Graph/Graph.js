@@ -2,7 +2,7 @@ import React, { PureComponent, useState, useEffect } from 'react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import './Graph.css'
 
-function Graph({countries, categoryOnGraph, apiKey}) {
+function Graph({ categoryOnGraph, apiKey}) {
   const[data, setData] = useState([]);
   
 
@@ -26,11 +26,6 @@ function Graph({countries, categoryOnGraph, apiKey}) {
       Cases: dayStats.cases.total / 1000000,
       Deaths: dayStats.deaths.total / 1000000
     }
-  });
-
-  //Render list of countries
-  const options = countries.map((country) => {
-    return <option key={country} value={country}>{country}</option>
   });
 
 
