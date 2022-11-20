@@ -1,5 +1,5 @@
 import React, {useEffect, useState, useMemo} from 'react'
-import { useTable, usePagination } from 'react-table'
+import { useTable } from 'react-table'
 import { COLUMNS } from './Columns'
 import './basictable.css'
 import Filter from './Filter'

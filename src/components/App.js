@@ -4,6 +4,11 @@ import Graph from './Graph/Graph';
 import Table from './Table/Table';
 
 function App() {
+
+  useEffect(() => {
+    document.title = 'Covid-19 analysis system';
+  });
+
   const[countries, setCountries] = useState([]);
   const [categoryOnGraph, setCategoryOnGraph] = useState("Afghanistan");
 
